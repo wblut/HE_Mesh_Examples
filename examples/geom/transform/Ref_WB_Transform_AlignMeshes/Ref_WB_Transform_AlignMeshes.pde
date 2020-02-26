@@ -21,8 +21,8 @@ void create() {
   for (int i=0; i<mesh.getNumberOfFaces(); i++) {
     cylinders[i]=new HE_Mesh(new HEC_Cylinder(40, 10, 150, 8, 1).setCenter(0, 0,75)); 
     HE_Face face=mesh.getFaceWithIndex(i);
-    //Create a coordinate transfromation from one origin and orientation to another origin and orientation
-    WB_Transform T=new WB_Transform(WB_Point.ORIGIN(), WB_Vector.Z(), face.getFaceCenter(), face.getFaceNormal());
+    //Create a coordinate transformation from one origin and orientation to another origin and orientation
+    WB_Transform3D T=new WB_Transform3D(WB_Point.ORIGIN(), WB_Vector.Z(), face.getFaceCenter(), face.getFaceNormal());
     cylinders[i].transformSelf(T);// or .applySelf(T)
   }
 }

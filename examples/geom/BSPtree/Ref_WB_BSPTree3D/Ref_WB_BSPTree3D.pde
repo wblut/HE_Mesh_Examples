@@ -34,10 +34,12 @@ void draw() {
   render.drawEdges(mesh);
   for (WB_Point p : points) {
     if (tree.pointLocation(p)>0) {
+      //point outside
       stroke(255, 0, 0);
       render.drawPoint(p);
     } else {
       stroke(0, 255, 0);
+      //point inside
       render.drawPoint(p);
     }
   }
