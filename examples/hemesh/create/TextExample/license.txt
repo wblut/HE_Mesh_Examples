@@ -1,1 +1,1 @@
-license information: https://github.com/osp/osp.foundry.belgica-belgika
+license information: http://osp.kitchen/foundry/belgica-belgika/
