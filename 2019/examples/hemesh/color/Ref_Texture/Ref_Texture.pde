@@ -9,15 +9,17 @@ import processing.opengl.*;
 HE_Mesh mesh;
 WB_Render render;
 PImage img;
-int MODE=0;
+int MODE=2;
 
 void setup() {
   size(1000, 1000, P3D);
   smooth(8);
   textureMode(NORMAL);
+  textureWrap(REPEAT);
   create();
-  img=loadImage("sky.png");//texture.jpg");
+  img=loadImage("sky.png");
   render=new WB_Render(this);
+  render.flipTextureV(true);
 }
 
 void create() {
@@ -34,8 +36,10 @@ void create() {
     creator0.setV(20);
     creator0.setUSize(600);
     creator0.setVSize(600);
-    creator0.setWValues(values);
+    creator0.setValues(values);
+
     mesh=new HE_Mesh(creator0);
+    mesh.moveToSelf(0, 0, 0);
     break;
   case 1:
     HEC_Cylinder creator1=new HEC_Cylinder();
@@ -44,7 +48,7 @@ void create() {
     creator1.setFacets(14).setSteps(1);
     creator1.setCap(true, true);
     mesh=new HE_Mesh(creator1); 
-    HET_MeshOp.flipFaces(mesh);
+
     break;
   case 2:
     HEC_Cone creator2=new HEC_Cone();
@@ -59,7 +63,7 @@ void create() {
     break;
   case 4:
     mesh=new HE_Mesh(new HEC_Hemisphere().setCap(false).setRadius(200).setUFacets(16).setVFacets(8));
-    mesh.modify(new HEM_Shell().setThickness(10));
+    mesh.modify(new HEM_Shell().setThickness(50));
     break;
   case 5:
     mesh=new HE_Mesh(new HEC_Sphere().setRadius(2000).setUFacets(64).setVFacets(32));
@@ -74,21 +78,47 @@ void create() {
     creator6.setDonutParameters(0, 10, 10, 10, 5, 6, 12, 12, 3, 1);
     mesh=new HE_Mesh(creator6); 
     break;
+  case 7:
+    HEC_SeaShell creator7=new HEC_SeaShell();
+    mesh=new HE_Mesh(creator7); 
+    mesh.scaleSelf(4.0);
+    mesh.modify(new HEM_Shell().setThickness(4.0));
+    break;
+  case 8:
+    HEC_Beethoven creator8=new HEC_Beethoven();
+    mesh=new HE_Mesh(creator8); 
+    mesh.scaleSelf(10);
+    HET_Texture.setUVWCylindrical(mesh, new WB_Point(), new WB_Vector(0, 0, 1), 800.0);
+    break;
+   case 9:
+    HEC_Beethoven creator9=new HEC_Beethoven();
+    mesh=new HE_Mesh(creator9); 
+    mesh.scaleSelf(10);
+    HET_Texture.setUVWSpherical(mesh, new WB_Point(), new WB_Vector(0, 0, 1));
+    break;
   }
 }
 
 void draw() {
+  render.setUOffset(0.001*frameCount);
   background(55);
   translate(width/2, height/2);
-  rotateX(map(mouseY, 0, height, -PI, 0));
-  rotateZ(map(mouseX, 0, width, -PI, PI));
+
+  rotateX(map(mouseY, 0, height, PI, -PI));
+  rotateY(map(mouseX, 0, width, -PI, PI));
   noStroke();
   render.drawFaces(mesh, img);
   stroke(0);
   render.drawEdges(mesh);
 }
 
+
 void mousePressed() {
-  MODE=(MODE+1)%7;
+  MODE=(MODE+1)%10;
   create();
+}
+
+void keyPressed(){
+ mesh.selectRandomFaces(0.4).subdivide(new HES_PlanarMidEdge(),3); 
+  
 }
