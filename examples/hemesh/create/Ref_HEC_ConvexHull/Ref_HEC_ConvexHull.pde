@@ -20,8 +20,6 @@ void setup() {
   creator.setPoints(points);
   //alternatively points can be WB_Coord[], HE_Vertex[], any Collection<? extends WB_Coord>, any Collection<HE_Vertex>,
   //double[][] or int[][]
-  creator.setN(50000); // set number of points, can be lower than the number of passed points, only the first N points will be used
-
   
   mesh=new HE_Mesh(creator); 
   HET_Diagnosis.validate(mesh);
